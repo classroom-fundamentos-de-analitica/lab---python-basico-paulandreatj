@@ -158,30 +158,21 @@ def pregunta_06():
     ]
 
     """
-    cadenas = []
-    valores = []
+    archivo = open('data.csv', 'r').readlines()
+    archivo = [z.replace("\n", "") for z in archivo]
+    archivo = [z.split("\t")[4].split(",") for z in archivo]
+    letras = sorted({palabra[:3] for diccionario in archivo for palabra in diccionario})
+    letras = {letra: [] for letra in letras}
 
-    with open('data.csv') as csv_file:
-        datos = csv.reader(csv_file, delimiter='	')
-        for fila in datos:
-            diccionario = fila[4].split(',')
+    for i in archivo:
+        for elemento in i:
+            letras[elemento[:3]].append(int(elemento[4:]))
 
-            for elemento in diccionario: 
-                cadena = elemento.split(':')[0]
-                valor = elemento.split(':')[1]
+    x = []
+    for i in letras:
+        x.append((i, min(letras[i]), max(letras[i])))
 
-                if cadena not in cadenas:
-                    cadenas.append(cadena)
-                    valores.append([int(valor)])
-                else:
-                    valores[cadenas.index(cadena)].append(int(valor))
-
-    salida = []
-
-    for cadena in sorted(cadenas):
-        salida.append((cadena, min(valores[cadenas.index(cadena)]), max(valores[cadenas.index(cadena)])))
-
-    return salida
+    return x
 
 
 def pregunta_07():
@@ -237,24 +228,23 @@ def pregunta_08():
     ]
 
     """
-    numeros = []
-    letras = []
+    archivo = open('data.csv', 'r').readlines()
+    archivo = [z.replace("\n", "") for z in archivo]
+    archivo = [z.split("\t") for z in archivo]
 
-    with open('data.csv') as csv_file:
-        datos = csv.reader(csv_file, delimiter='	')
-        for fila in datos:
-            if int(fila[1]) not in numeros:
-                numeros.append(int(fila[1]))
-                letras.append({fila[0]})
-            else:
-                letras[numeros.index(int(fila[1]))].add(fila[0])
+    columnas = [(fila[0], int(fila[1])) for fila in archivo]
+    numeros = sorted([fila[1] for fila in columnas])
+    numeros = {numero: [] for numero in numeros}
 
-    salida = []
+    for i in columnas:
+        if i[0] not in numeros[i[1]]:
+            numeros[i[1]].append(i[0])
 
-    for numero in sorted(numeros):
-        salida.append((numero, list(sorted(letras[numeros.index(numero)]))))
+    x = []
+    for j in numeros:
+        x.append((j, sorted(numeros[j])))
 
-    return salida
+    return x
 
 
 def pregunta_09():
@@ -343,18 +333,19 @@ def pregunta_11():
 
 
     """
-    letras = {}
+    archivo = open('data.csv', 'r').readlines()
+    archivo = [z.replace("\n", "") for z in archivo]
+    archivo = [z.split("\t") for z in archivo]
+    letras = sorted({letra for col in archivo for letra in col[3].split(",")})
+    
+    final = {letra:0 for letra in letras}
 
-    with open('data.csv') as csv_file:
-        datos = csv.reader(csv_file, delimiter='	')
-        for fila in datos:
-            for letra in fila[3].split(','):
-                if not letra in letras.keys():
-                    letras[letra] = int(fila[1])
-                else:
-                    letras[letra] += int(fila[1])
-
-    return dict(sorted(letras.items()))
+    for i in archivo:
+        l = i[3].split(",")
+        for elemento in l:
+            final[elemento] += int(i[1])
+    
+    return final
 
 
 
@@ -373,19 +364,21 @@ def pregunta_12():
     }
 
     """
-    letras = {}
+    archivo = open('data.csv', 'r').readlines()
+    archivo = [z.replace("\n", "") for z in archivo]
+    archivo = [z.split("\t") for z in archivo]
 
-    with open('data.csv') as csv_file:
-        datos = csv.reader(csv_file, delimiter='	')
-        for fila in datos:
-            letra = fila[0]
-            
-            for elemento in fila[4].split(','):
-                numero = int(elemento.split(':')[1])
+    letras = sorted({fila[0] for fila in archivo})
+    col5 = [[col[0],col[4].split(",")] for col in archivo]
 
-                if not letra in letras.keys():
-                    letras[letra] = numero
-                else:
-                    letras[letra] += numero
+    for fila in col5:
+        for elemento in range(len(fila[1])):
+            fila[1][elemento] = int(fila[1][elemento][4:])
+        fila[1] = sum(fila[1])
+    
+    dicc = {letra: 0 for letra in letras}
 
-    return dict(sorted(letras.items()))
+    for elemento in col5:
+        dicc[elemento[0]] += elemento[1]
+
+    return dicc
