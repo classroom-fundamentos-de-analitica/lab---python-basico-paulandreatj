@@ -158,30 +158,30 @@ def pregunta_06():
     ]
 
     """
-    strings = []
-    values = []
+    cadenas = []
+    valores = []
 
     with open('data.csv') as csv_file:
         datos = csv.reader(csv_file, delimiter='	')
         for fila in datos:
-            dicti = fila[4].split(',')
+            diccionario = fila[4].split(',')
 
-            for e in dicti: 
-                cadena = e.split(':')[0]
-                valor = e.split(':')[1]
+            for elemento in diccionario: 
+                cadena = elemento.split(':')[0]
+                valor = elemento.split(':')[1]
 
-                if cadena not in strings:
-                    strings.append(cadena)
-                    values.append([int(valor)])
+                if cadena not in cadenas:
+                    cadenas.append(cadena)
+                    valores.append([int(valor)])
                 else:
-                    values[strings.index(cadena)].append(int(valor))
+                    valores[cadenas.index(cadena)].append(int(valor))
 
-    output = []
+    salida = []
 
-    for cadena in sorted(strings):
-        output.append((cadena, min(values[strings.index(cadena)]), max(values[strings.index(cadena)])))
+    for cadena in sorted(cadenas):
+        salida.append((cadena, min(valores[cadenas.index(cadena)]), max(valores[cadenas.index(cadena)])))
 
-    return output
+    return salida
 
 
 def pregunta_07():
@@ -237,21 +237,24 @@ def pregunta_08():
     ]
 
     """
+    numeros = []
+    letras = []
+
     with open('data.csv') as csv_file:
         datos = csv.reader(csv_file, delimiter='	')
         for fila in datos:
-            if int(fila[1]) not in nums:
-                nums.append(int(fila[1]))
-                l.append({fila[0]})
+            if int(fila[1]) not in numeros:
+                numeros.append(int(fila[1]))
+                letras.append({fila[0]})
             else:
-                l[nums.index(int(fila[1]))].add(fila[0])
+                letras[numeros.index(int(fila[1]))].add(fila[0])
 
-    output = []
+    salida = []
 
-    for numero in sorted(nums):
-        output.append((numero, list(sorted(l[nums.index(numero)]))))
+    for numero in sorted(numeros):
+        salida.append((numero, list(sorted(letras[numeros.index(numero)]))))
 
-    return output
+    return salida
 
 
 def pregunta_09():
@@ -341,16 +344,18 @@ def pregunta_11():
 
     """
     letras = {}
+
     with open('data.csv') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter='	')
-        for row in csv_reader:
-            for letra in row[3].split(","):
-                if(not letra in letras.keys()):
-                    letras.update({letra: int(row[1])})
+        datos = csv.reader(csv_file, delimiter='	')
+        for fila in datos:
+            for letra in fila[3].split(','):
+                if not letra in letras.keys():
+                    letras[letra] = int(fila[1])
                 else:
-                    letras[letra] += int(row[1])
-    dicc = sorted(letras.items())
-    return dict(dicc)
+                    letras[letra] += int(fila[1])
+
+    return dict(sorted(letras.items()))
+
 
 
 def pregunta_12():
@@ -368,16 +373,19 @@ def pregunta_12():
     }
 
     """
-    letras = {}
+     letras = {}
+
     with open('data.csv') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter='	')
-        for row in csv_reader:
-            letra = row[0]
-            for codigo in row[4].split(","):
-                numero = int(codigo.split(":")[1])
-                if(not letra in letras.keys()):
-                    letras.update({letra: numero})
+        datos = csv.reader(csv_file, delimiter='	')
+        for fila in datos:
+            letra = fila[0]
+            
+            for elemento in fila[4].split(','):
+                numero = int(elemento.split(':')[1])
+
+                if not letra in letras.keys():
+                    letras[letra] = numero
                 else:
                     letras[letra] += numero
-    dicc = sorted(letras.items())
-    return dict(dicc)
+
+    return dict(sorted(letras.items()))
