@@ -373,7 +373,7 @@ def pregunta_12():
     }
 
     """
-     letras = {}
+    letras = {}
 
     with open('data.csv') as csv_file:
         datos = csv.reader(csv_file, delimiter='	')
