@@ -44,9 +44,9 @@ def pregunta_02():
     """
     file = open("data.csv", "r")
     l = [line[0] for line in file]
-    r = sorted((letra, l.count(letra)) for letra in set(l))
+    result = sorted((letra, l.count(letra)) for letra in set(l))
 
-    return r
+    return result
 
 
 def pregunta_03():
@@ -100,9 +100,9 @@ def pregunta_04():
 
     """
     file = open("data.csv", "r")
-    meses = [line[9:11] for line in file]
+    months = [line[9:11] for line in file]
     file.close()
-    result = sorted((mes, meses.count(mes)) for mes in set(meses))
+    result = sorted((month, months.count(month)) for month in set(monts))
 
     return result
 
@@ -158,21 +158,21 @@ def pregunta_06():
     ]
 
     """
-    archivo = open('data.csv', 'r').readlines()
-    archivo = [z.replace("\n", "") for z in archivo]
-    archivo = [z.split("\t")[4].split(",") for z in archivo]
-    letras = sorted({palabra[:3] for diccionario in archivo for palabra in diccionario})
+    file = open('data.csv', 'r').readlines()
+    file = [z.replace("\n", "") for z in file]
+    file = [z.split("\t")[4].split(",") for z in file]
+    letras = sorted({palabra[:3] for diccionario in file for palabra in diccionario})
     letras = {letra: [] for letra in letras}
 
-    for i in archivo:
+    for i in file:
         for elemento in i:
             letras[elemento[:3]].append(int(elemento[4:]))
 
-    x = []
+    result = []
     for i in letras:
-        x.append((i, min(letras[i]), max(letras[i])))
+        result.append((i, min(letras[i]), max(letras[i])))
 
-    return x
+    return result
 
 
 def pregunta_07():
@@ -200,10 +200,10 @@ def pregunta_07():
     ingress = [(int(line[2]), line[0]) for line in file]
     file.close()
     values = set([tupla[0] for tupla in ingress])
-    ans = []
+    result = []
     for value in values:
-        ans.append((value, [tupla[1] for tupla in ingress if tupla[0] == value]))
-    return sorted(ans)
+        result.append((value, [tupla[1] for tupla in ingress if tupla[0] == value]))
+    return sorted(result)
 
 
 def pregunta_08():
@@ -228,11 +228,11 @@ def pregunta_08():
     ]
 
     """
-    archivo = open('data.csv', 'r').readlines()
-    archivo = [z.replace("\n", "") for z in archivo]
-    archivo = [z.split("\t") for z in archivo]
+    file = open('data.csv', 'r').readlines()
+    file = [z.replace("\n", "") for z in file]
+    file = [z.split("\t") for z in file]
 
-    columnas = [(fila[0], int(fila[1])) for fila in archivo]
+    columnas = [(fila[0], int(fila[1])) for fila in file]
     numeros = sorted([fila[1] for fila in columnas])
     numeros = {numero: [] for numero in numeros}
 
@@ -240,11 +240,11 @@ def pregunta_08():
         if i[0] not in numeros[i[1]]:
             numeros[i[1]].append(i[0])
 
-    x = []
+    result = []
     for j in numeros:
-        x.append((j, sorted(numeros[j])))
+        result.append((j, sorted(numeros[j])))
 
-    return x
+    return result
 
 
 def pregunta_09():
@@ -279,9 +279,9 @@ def pregunta_09():
                     ingressDict.append(sublist[1][:3])
                     continue
                 ingressDict.append(sublist[0][:3])
-    ans = {key:ingressDict.count(key) for key in ingressDict}
+    result = {key:ingressDict.count(key) for key in ingressDict}
 
-    return ans
+    return result
 
 
 def pregunta_10():
@@ -302,17 +302,17 @@ def pregunta_10():
 
 
     """
-    f = open("data.csv", "r")
-    entradas = [line.split("\t") for line in f]
-    f.close()
-    resultado = []
+    file = open("data.csv", "r")
+    entradas = [line.split("\t") for line in file]
+    file.close()
+    result = []
     for entrada in entradas:
         letra = entrada[0]
         columna4 = entrada[3].split(",")
         columna5 = ",".join(entrada[4:]).split(",")
-        resultado.append((letra, len(columna4), len(columna5)))
+        result.append((letra, len(columna4), len(columna5)))
 
-    return resultado
+    return result
 
 
 def pregunta_11():
@@ -333,19 +333,19 @@ def pregunta_11():
 
 
     """
-    archivo = open('data.csv', 'r').readlines()
-    archivo = [z.replace("\n", "") for z in archivo]
-    archivo = [z.split("\t") for z in archivo]
-    letras = sorted({letra for col in archivo for letra in col[3].split(",")})
+    file = open('data.csv', 'r').readlines()
+    file = [z.replace("\n", "") for z in file]
+    file = [z.split("\t") for z in file]
+    letras = sorted({letra for col in file for letra in col[3].split(",")})
     
-    final = {letra:0 for letra in letras}
+    result = {letra:0 for letra in letras}
 
-    for i in archivo:
+    for i in file:
         l = i[3].split(",")
         for elemento in l:
-            final[elemento] += int(i[1])
+            result[elemento] += int(i[1])
     
-    return final
+    return result
 
 
 
@@ -364,21 +364,21 @@ def pregunta_12():
     }
 
     """
-    archivo = open('data.csv', 'r').readlines()
-    archivo = [z.replace("\n", "") for z in archivo]
-    archivo = [z.split("\t") for z in archivo]
+    file = open('data.csv', 'r').readlines()
+    file = [z.replace("\n", "") for z in file]
+    file = [z.split("\t") for z in file]
 
-    letras = sorted({fila[0] for fila in archivo})
-    col5 = [[col[0],col[4].split(",")] for col in archivo]
+    letras = sorted({fila[0] for fila in file})
+    col5 = [[col[0],col[4].split(",")] for col in file]
 
     for fila in col5:
         for elemento in range(len(fila[1])):
             fila[1][elemento] = int(fila[1][elemento][4:])
         fila[1] = sum(fila[1])
     
-    dicc = {letra: 0 for letra in letras}
+    result = {letra: 0 for letra in letras}
 
     for elemento in col5:
-        dicc[elemento[0]] += elemento[1]
+        result[elemento[0]] += elemento[1]
 
-    return dicc
+    return result
