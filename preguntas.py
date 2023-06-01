@@ -102,7 +102,7 @@ def pregunta_04():
     file = open("data.csv", "r")
     months = [line[9:11] for line in file]
     file.close()
-    result = sorted((month, months.count(month)) for month in set(monts))
+    result = sorted((month, months.count(month)) for month in set(months))
 
     return result
 
