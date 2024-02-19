@@ -21,7 +21,10 @@ def pregunta_01():
     214
 
     """
-    return
+    file = open("data.csv", "r")
+    values = [int(line[2]) for line in file]
+    file.close()
+    return sum(values)
 
 
 def pregunta_02():
@@ -39,7 +42,11 @@ def pregunta_02():
     ]
 
     """
-    return
+    file = open("data.csv", "r")
+    l = [line[0] for line in file]
+    result = sorted((letra, l.count(letra)) for letra in set(l))
+
+    return result
 
 
 def pregunta_03():
@@ -57,7 +64,17 @@ def pregunta_03():
     ]
 
     """
-    return
+    file = open("data.csv", "r")
+    values = [(line[0], line[2]) for line in file]
+    file.close()
+    result = {}
+    for letra, num in values:
+        if letra not in result:
+            result[letra] = int(num)
+            continue
+        result[letra] += int(num)
+
+    return sorted((key, value) for key, value in result.items())
 
 
 def pregunta_04():
@@ -82,7 +99,12 @@ def pregunta_04():
     ]
 
     """
-    return
+    file = open("data.csv", "r")
+    months = [line[9:11] for line in file]
+    file.close()
+    result = sorted((month, months.count(month)) for month in set(months))
+
+    return result
 
 
 def pregunta_05():
@@ -100,7 +122,18 @@ def pregunta_05():
     ]
 
     """
-    return
+    file = open("data.csv", "r")
+    ingress = [(line[0], int(line[2])) for line in file]
+    file.close()
+    l = set([ent[0] for ent in ingress])
+    result = []
+    for letra in l:
+        lIngress = []
+        for ent in ingress:
+            if ent[0] == letra:
+                lIngress.append(ent[1])
+        result.append((letra, max(lIngress), min(lIngress)))
+    return sorted(result)
 
 
 def pregunta_06():
@@ -125,7 +158,21 @@ def pregunta_06():
     ]
 
     """
-    return
+    file = open('data.csv', 'r').readlines()
+    file = [z.replace("\n", "") for z in file]
+    file = [z.split("\t")[4].split(",") for z in file]
+    letras = sorted({palabra[:3] for diccionario in file for palabra in diccionario})
+    letras = {letra: [] for letra in letras}
+
+    for i in file:
+        for elemento in i:
+            letras[elemento[:3]].append(int(elemento[4:]))
+
+    result = []
+    for i in letras:
+        result.append((i, min(letras[i]), max(letras[i])))
+
+    return result
 
 
 def pregunta_07():
@@ -149,7 +196,14 @@ def pregunta_07():
     ]
 
     """
-    return
+    file = open("data.csv", "r")
+    ingress = [(int(line[2]), line[0]) for line in file]
+    file.close()
+    values = set([tupla[0] for tupla in ingress])
+    result = []
+    for value in values:
+        result.append((value, [tupla[1] for tupla in ingress if tupla[0] == value]))
+    return sorted(result)
 
 
 def pregunta_08():
@@ -174,7 +228,23 @@ def pregunta_08():
     ]
 
     """
-    return
+    file = open('data.csv', 'r').readlines()
+    file = [z.replace("\n", "") for z in file]
+    file = [z.split("\t") for z in file]
+
+    columnas = [(fila[0], int(fila[1])) for fila in file]
+    numeros = sorted([fila[1] for fila in columnas])
+    numeros = {numero: [] for numero in numeros}
+
+    for i in columnas:
+        if i[0] not in numeros[i[1]]:
+            numeros[i[1]].append(i[0])
+
+    result = []
+    for j in numeros:
+        result.append((j, sorted(numeros[j])))
+
+    return result
 
 
 def pregunta_09():
@@ -197,7 +267,21 @@ def pregunta_09():
     }
 
     """
-    return
+    file = open("data.csv", "r")
+    ingress = [line.split(",")[1:] for line in file]
+    file.close()
+    ingressDict = []
+    for lista in ingress:
+        for entrada in lista:
+            if len(entrada) > 1:
+                sublist = entrada.strip().split("\t")
+                if len(sublist) > 1:
+                    ingressDict.append(sublist[1][:3])
+                    continue
+                ingressDict.append(sublist[0][:3])
+    result = {key:ingressDict.count(key) for key in ingressDict}
+
+    return result
 
 
 def pregunta_10():
@@ -218,7 +302,17 @@ def pregunta_10():
 
 
     """
-    return
+    file = open("data.csv", "r")
+    entradas = [line.split("\t") for line in file]
+    file.close()
+    result = []
+    for entrada in entradas:
+        letra = entrada[0]
+        columna4 = entrada[3].split(",")
+        columna5 = ",".join(entrada[4:]).split(",")
+        result.append((letra, len(columna4), len(columna5)))
+
+    return result
 
 
 def pregunta_11():
@@ -239,7 +333,20 @@ def pregunta_11():
 
 
     """
-    return
+    file = open('data.csv', 'r').readlines()
+    file = [z.replace("\n", "") for z in file]
+    file = [z.split("\t") for z in file]
+    letras = sorted({letra for col in file for letra in col[3].split(",")})
+    
+    result = {letra:0 for letra in letras}
+
+    for i in file:
+        l = i[3].split(",")
+        for elemento in l:
+            result[elemento] += int(i[1])
+    
+    return result
+
 
 
 def pregunta_12():
@@ -257,4 +364,21 @@ def pregunta_12():
     }
 
     """
-    return
+    file = open('data.csv', 'r').readlines()
+    file = [z.replace("\n", "") for z in file]
+    file = [z.split("\t") for z in file]
+
+    letras = sorted({fila[0] for fila in file})
+    col5 = [[col[0],col[4].split(",")] for col in file]
+
+    for fila in col5:
+        for elemento in range(len(fila[1])):
+            fila[1][elemento] = int(fila[1][elemento][4:])
+        fila[1] = sum(fila[1])
+    
+    result = {letra: 0 for letra in letras}
+
+    for elemento in col5:
+        result[elemento[0]] += elemento[1]
+
+    return result
